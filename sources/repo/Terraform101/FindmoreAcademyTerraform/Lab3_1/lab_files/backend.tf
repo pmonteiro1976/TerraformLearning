@@ -2,8 +2,8 @@ terraform {
 
   backend "azurerm" {
 
-    resource_group_name  = "rg-focloud-test-wcde-001"
-    storage_account_name = "stfocloudtestwcde001"
+    resource_group_name  = "rg_lab"
+    storage_account_name = "fmacademystorage1234"
     container_name       = "tfstate"
 
     key = "student-paulomonteiro.tfstate"

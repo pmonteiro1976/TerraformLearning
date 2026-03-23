@@ -86,3 +86,32 @@ resource "azurerm_subnet" "delta" {
 }
 
 
+resource "azurerm_network_security_group" "remote_access" {
+  name                = "nsg-${var.application_name}-${var.environment_name}-${local.region_code}-remote-access"
+  location            = azurerm_resource_group.main.location
+  resource_group_name = azurerm_resource_group.main.name
+
+  security_rule {
+    name                       = "ssh"
+    priority                   = 100
+    direction                  = "Inbound"
+    access                     = "Allow"
+    protocol                   = "Tcp"
+    source_port_range          = "*"
+    destination_port_range     = "22"
+    source_address_prefix      = chomp(data.http.my_ip.response_body)
+    destination_address_prefix = "*"
+  }
+
+}
+
+resource "azurerm_subnet_network_security_group_association" "alpha_remote_access" {
+  subnet_id                 = azurerm_subnet.alpha.id
+  network_security_group_id = azurerm_network_security_group.remote_access.id
+}
+
+#dinamically get you public ip
+data "http" "my_ip" {
+url = "https://ifconfig.me/ip"
+
+}

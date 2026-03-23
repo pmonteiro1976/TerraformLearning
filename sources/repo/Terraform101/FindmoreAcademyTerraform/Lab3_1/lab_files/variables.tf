@@ -1,26 +1,26 @@
 variable "location" {
   type        = string
   description = "Region of the resource group"
-  default     = "Germany West Central"
+  default     = "westeurope"
 }
 
 variable "rg_name" {
   type        = string
   description = "Name of the resource group"
-  default     = "rg-focloud-test-wcde-003"
+  default     = "rg_vnet"
 
 }
 
 variable "vnet_name" {
   type        = string
   description = "Name of the Virtual Network"
-  default     = "vnet_lab"
+  default     = "lab_vnet"
 
 }
 
 variable "address_space" {
   type        = string
   description = "CIDR for VNET"
-  default     = "10.100.0.0/16"
+  default     = "10.0.0.0/16"
 
 }
