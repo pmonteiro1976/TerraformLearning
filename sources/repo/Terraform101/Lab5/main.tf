@@ -18,11 +18,11 @@ locals {
 
   region_code = lookup(local.region_code_map, var.primary_location, "unknown")
 
-// automate/dynamic code subnet adresss space:
-alpha_address_space=cidrsubnet(var.base_address_space,2,0)
-bravo_address_space=cidrsubnet(var.base_address_space,2,1)
-charlie_address_space=cidrsubnet(var.base_address_space,2,2)
-delta_address_space=cidrsubnet(var.base_address_space,2,3)
+  // automate/dynamic code subnet adresss space:
+  alpha_address_space   = cidrsubnet(var.base_address_space, 2, 0)
+  bravo_address_space   = cidrsubnet(var.base_address_space, 2, 1)
+  charlie_address_space = cidrsubnet(var.base_address_space, 2, 2)
+  delta_address_space   = cidrsubnet(var.base_address_space, 2, 3)
 
 }
 
@@ -33,13 +33,15 @@ resource "azurerm_resource_group" "main" {
 
 }
 
-//resource "random_string" "Keyvault_suffix" {
-    //length = 6
-    //upper = false
-    //special = false
-//}
+/*
+resource "random_string" "Keyvault_suffix" {
+length = 6
+upper = false
+special = false
+}
+*/
 
-data "azurerm_client_config" "current"{}
+data "azurerm_client_config" "current" {}
 
 resource "azurerm_virtual_network" "main" {
 
@@ -112,6 +114,6 @@ resource "azurerm_subnet_network_security_group_association" "alpha_remote_acces
 
 #dinamically get you public ip
 data "http" "my_ip" {
-url = "https://ifconfig.me/ip"
+  url = "https://ifconfig.me/ip"
 
 }
