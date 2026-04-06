@@ -22,9 +22,9 @@ terraform {
   }
 
   backend "azurerm" {
-    resource_group_name  = "rg-focloud-test-wcde-001"
-    storage_account_name = "stfocloudtestwcde001"
-    container_name       = "tfstate"
+    resource_group_name  = "rg-focloud-dev-wcde-001"
+    storage_account_name = "stfoclouddevwcde001"
+    container_name       = "tfstatedev"
     key                  = "lab6-linuxvm-dev"
     use_azuread_auth     = true
   }

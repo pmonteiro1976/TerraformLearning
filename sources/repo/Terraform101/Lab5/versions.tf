@@ -12,10 +12,10 @@ terraform {
     }
   }
   backend "azurerm" {
-    resource_group_name = "rg-focloud-test-wcde-001"
-    storage_account_name = "stfocloudtestwcde001"
-    container_name = "tfstate"
-    key = "network-dev"
+    resource_group_name  = "rg-focloud-dev-wcde-001"
+    storage_account_name = "stfoclouddevwcde001"
+    container_name       = "tfstatedev"
+    key                  = "lab5-network-dev"
     use_azuread_auth     = true
 
   }
@@ -24,5 +24,5 @@ terraform {
 # Configure the Microsoft Azure Provider
 provider "azurerm" {
   features {}
-subscription_id ="1ac63b44-5fd9-4c8d-9f02-8e402430ed50" 
+  subscription_id = "1ac63b44-5fd9-4c8d-9f02-8e402430ed50"
 }

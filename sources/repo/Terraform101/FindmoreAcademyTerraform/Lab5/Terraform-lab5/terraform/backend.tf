@@ -6,7 +6,7 @@ terraform {
     storage_account_name = "fmacademystorage1234"
     container_name       = "tfstate"
 
-    key = "student-rameh.tfstate"
+    key = "paulomonteiro-rameh.tfstate"
 
   }
 
