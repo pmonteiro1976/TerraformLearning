@@ -4,6 +4,11 @@ variable "application_name" {
 
 }
 
+variable "application_name2" {
+  description = "The name of another application"
+  type        = string
+
+}
 variable "environment_name" {
   description = "The environment for the resources"
   type        = string
@@ -20,8 +25,14 @@ variable "primary_location" {
 
 }
 
+
+
 variable "remote_access_users" {
   type = list(string)
 
 }
 
+variable "base_address_space" {
+  type = string
+
+}
