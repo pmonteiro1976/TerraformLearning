@@ -19,3 +19,9 @@ variable "primary_location" {
   }
 
 }
+
+variable "remote_access_users" {
+  type = list(string)
+
+}
+

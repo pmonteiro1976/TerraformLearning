@@ -6,7 +6,10 @@ terraform {
       source  = "hashicorp/azurerm"
       version = "~> 4.8.0"
     }
-
+    azuread = {
+      source  = "hashicorp/azuread"
+      version = "~> 3.2.0"
+    }
 
     http = {
       source  = "hashicorp/http"
@@ -33,6 +36,12 @@ terraform {
 
 # Configure the Microsoft Azure Provider
 provider "azurerm" {
-  features {}
+  features {
+    key_vault {
+      purge_soft_delete_on_destroy = true
+      recover_soft_deleted_secrets = true
+    }
+
+  }
   subscription_id = "1ac63b44-5fd9-4c8d-9f02-8e402430ed50"
 }
