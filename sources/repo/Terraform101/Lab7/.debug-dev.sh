@@ -3,7 +3,7 @@ set -e
 
 ACTION=${1:-plan}  # default to plan if no argument
 
-#Attention: bash script does is very sensible to white spaces
+#Attention: bash script is very sensible to white spaces
 # Set the subscription
 az account set --subscription "1ac63b44-5fd9-4c8d-9f02-8e402430ed50"
 
@@ -12,15 +12,16 @@ az account set --subscription "1ac63b44-5fd9-4c8d-9f02-8e402430ed50"
 # Set the subscription
 export ARM_SUBSCRIPTION_ID="1ac63b44-5fd9-4c8d-9f02-8e402430ed50"
 
-# set the applucation / environment
-export TF_VAR_application_name="devops"
+# set the application / environment
+export TF_VAR_application_name="azapivm"
 export TF_VAR_environment_name="dev"
+export TF_VAR_Lab_environment="lab7"
 
 #set the backend config- CREATED ENV VARIABLES TO USE IN THE BACKEND CONFIGURATION
 export BACKEND_RESOURCE_GROUP="rg-focloud-dev-wcde-001"
 export BACKEND_STORAGE_ACCOUNT="stfoclouddevwcde001"
-export BACKEND_CONTAINER_NAME="tfstate"
-export BACKEND_KEY="devops-dev"
+export BACKEND_CONTAINER_NAME="tfstatedev"
+export BACKEND_KEY=$TF_VAR_Lab_environment-$TF_VAR_application_name-$TF_VAR_environment_name
 
 # Export ARM_ACCESS_KEY for Terraform backend
 ACCOUNT_KEY=$(az storage account keys list \
@@ -49,7 +50,8 @@ if ! az storage account show --name "$BACKEND_STORAGE_ACCOUNT" --resource-group 
     --resource-group "$BACKEND_RESOURCE_GROUP" \
     --location "Germany West Central" \
     --sku Standard_LRS \
-    --kind StorageV2
+    --kind StorageV2 \
+    --allow-shared-key-access true
   
 fi
 
@@ -59,7 +61,8 @@ if ! az storage container show --name "$BACKEND_CONTAINER_NAME" --account-name "
   az storage container create \
     --name "$BACKEND_CONTAINER_NAME" \
     --account-name "$BACKEND_STORAGE_ACCOUNT" \
-    --auth-mode login
+    --account-key "$ACCOUNT_KEY"
+    #--auth-mode login
 fi
 
 
@@ -69,11 +72,14 @@ terraform init \
     -backend-config="resource_group_name=${BACKEND_RESOURCE_GROUP}" \
     -backend-config="storage_account_name=${BACKEND_STORAGE_ACCOUNT}" \
     -backend-config="container_name=${BACKEND_CONTAINER_NAME}" \
-    -backend-config="key=${BACKEND_KEY}"
+    -backend-config="key=${BACKEND_KEY}" \
+    -reconfigure
 
 #terraform $*
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-TFVARS_FILE="${SCRIPT_DIR}/env/dev.tfvars"
+TFVARS_FILE="${SCRIPT_DIR}/env/$TF_VAR_environment_name.tfvars"
+
+terraform workspace new $TF_VAR_environment_name | terraform workspace select $TF_VAR_environment_name
 
 terraform $ACTION -var-file="${TFVARS_FILE}"
 
